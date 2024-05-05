@@ -13,8 +13,8 @@
     "test": "jest"
   },
   "author": {
-    "name": "Ricardo do Rosario",
-    "email": "rdr.rosario@yahoo.com.br"
+    "name": "George Ambriz",
+    "email": "George@dodgeit.com"
   },
   "dependencies": {
     "react": "^18.2.0",
