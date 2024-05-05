@@ -2,8 +2,6 @@
 
 ## Checkers react game for CSE108
 
-An example of checkers game using React
-
 
 
 Things required for Project: 
