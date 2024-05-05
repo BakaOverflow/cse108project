@@ -9,6 +9,14 @@ const passport = require('passport');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Initalize SQLite
+const sqlite3 = require("sqlite3").verbose();
+let sql;
+
+const db = new sqlite3.Database("./checkers.db", sqlite3.OPEN_READWRITE, (err) =>{
+    if (err) return console.error(err.message);
+});
+
 // Middleware to parse JSON and urlencoded data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
