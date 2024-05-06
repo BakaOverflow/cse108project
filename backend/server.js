@@ -1,10 +1,10 @@
 const express = require('express');
-require('dotenv').config(); // Load environment variables
-const sequelize = require('./config/connection'); // Import the database connection
-
-// Passport and session management (placeholders for setup)
+require('dotenv').config(); // Load environment variables early
+const sequelize = require('./config/connection'); // Adjust as needed for your DB
 const session = require('express-session');
 const passport = require('passport');
+require('./config/passportConfig'); // Make sure to configure Passport strategies here
+const userRoutes = require('./routes/userRoutes'); // Ensure this file exists and is set up
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -13,27 +13,24 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Session configuration (Adjust secret and other options as needed)
+// Session configuration, using an environment variable for the secret
 app.use(session({
-  secret: 'super secret', // You should store this in an environment variable
+  secret: process.env.SESSION_SECRET, // Better to use an environment variable
   resave: false,
   saveUninitialized: true,
 }));
 
-// Passport middleware
+// Initialize Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Import routes
-const userRoutes = require('./routes/userRoutes'); // Placeholder for user authentication routes
-
-// Basic route for testing that the server is running
+// Basic route for testing server response
 app.get('/', (req, res) => {
   res.send('Checkers Game Backend is running!');
 });
 
-// Use routes
-app.use('/api/users', userRoutes); // Placeholder for actual user route file
+// Apply user authentication routes
+app.use('/api/users', userRoutes);
 
 // Sync Sequelize models to the database, then start the server
 sequelize.sync({ force: false }).then(() => {
