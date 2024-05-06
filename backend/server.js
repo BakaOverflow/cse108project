@@ -1,45 +1,43 @@
-// Import required libraries
 const express = require('express');
-require('dotenv').config(); // Load environment variables early
-const sequelize = require('./config/connection'); // Adjust as needed for your DB
+const cors = require('cors');  // Import CORS module
+require('dotenv').config();
+const sequelize = require('./config/connection');
 const session = require('express-session');
 const passport = require('passport');
-require('./config/passportConfig'); // Make sure to configure Passport strategies here
-const userRoutes = require('./routes/userRoutes'); // Ensure this file exists and is set up
+require('./config/passportConfig');
+const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware to parse JSON and urlencoded data
+// CORS configuration to allow requests from the frontend URL
+app.use(cors({
+  origin: 'http://localhost:9000', // This is the URL of your frontend application
+  credentials: true  // Allows cookies to be sent and received
+}));
+
+// Other middleware configurations
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Enhanced session configuration
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {
-    httpOnly: true, // Protects against client-side script accessing the cookie
-    secure: process.env.NODE_ENV === "production", // Cookies are sent only over HTTPS
-    sameSite: 'strict', // Strict sameSite setting to prevent sending the cookie along with cross-site requests
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: 'strict',
+    maxAge: 24 * 60 * 60 * 1000
   }
 }));
 
-// Initialize Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
-
-// Basic route for testing server response
 app.get('/', (req, res) => {
   res.send('Checkers Game Backend is running!');
 });
-
-// Apply user authentication routes
 app.use('/api/users', userRoutes);
 
-// Sync Sequelize models to the database, then start the server
 sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
