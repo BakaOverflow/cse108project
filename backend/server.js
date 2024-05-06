@@ -1,3 +1,4 @@
+// Import required libraries
 const express = require('express');
 require('dotenv').config(); // Load environment variables early
 const sequelize = require('./config/connection'); // Adjust as needed for your DB
@@ -13,11 +14,17 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Session configuration, using an environment variable for the secret
+// Enhanced session configuration
 app.use(session({
-  secret: process.env.SESSION_SECRET, // Better to use an environment variable
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
+  cookie: {
+    httpOnly: true, // Protects against client-side script accessing the cookie
+    secure: process.env.NODE_ENV === "production", // Cookies are sent only over HTTPS
+    sameSite: 'strict', // Strict sameSite setting to prevent sending the cookie along with cross-site requests
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  }
 }));
 
 // Initialize Passport middleware

@@ -2,6 +2,7 @@
 // Updated for use with sqlite database
 const { Sequelize } = require('sequelize');
 
+
 // Use dotenv to load the path from .env file
 require('dotenv').config();
 
