@@ -1,15 +1,11 @@
-// Import the necessary libraries
-// Updated for use with sqlite database
+// config/connection.js
 const { Sequelize } = require('sequelize');
 
-
-// Use dotenv to load the path from .env file
 require('dotenv').config();
 
-// Set up the SQLite database connection using Sequelize
 const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: process.env.DB_PATH  // Path to the SQLite file
+    dialect: 'sqlite',
+    storage: process.env.DB_PATH  // Ensure your .env points to 'checkers.db'
 });
 
 module.exports = sequelize;

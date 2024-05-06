@@ -51,11 +51,8 @@ app.get('/', (req, res) => {
 // Apply user authentication routes
 app.use('/api/users', userRoutes);
 
-// Sync database models and start the server
-sequelize.sync({ force: false }).then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-  });
-}).catch((error) => {
-  console.error("Failed to sync database:", error);
+// Instead of Sequelize, maybe some other DB initialization or sync process
+// For now, just start the server
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
