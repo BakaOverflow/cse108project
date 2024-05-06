@@ -1,17 +1,20 @@
 import React from "react";
-import { List } from "react-bootstrap-icons";
-import { Button } from "react-bootstrap";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import io from "socket.io-client";
+
 import Table from "./Table";
 import PiecesCounterBar from "./PiecesCounterBar";
 import * as appActions from "./AppActions";
 import Settings from "./Settings";
-import Login from "./Login"; // Import the Login component
-import Registration from "./Registration"; // Import the Registration component
+import Home from './routes/Home';
+import Login from './routes/Login';
+import Game from './routes/Game';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      socket: null,
       table: [],
       blackStarts: true,
       whoPlay: "black",
@@ -20,54 +23,61 @@ class App extends React.Component {
       whitePieces: 12,
       nexMoveInAnyDirection: false,
       showMenu: false,
-      showLogin: true, // State to control login display
-      isAuthenticated: false // State to check if user is authenticated
+      isAuthenticated: false // Assume authentication state can be derived from somewhere
     };
   }
 
   componentDidMount() {
+    this.initSocket();
     appActions.init(this);
   }
 
-  render() {
-    const { blackPieces, whitePieces, table, whoPlay, isAuthenticated, showLogin } = this.state;
-    if (!isAuthenticated) {
-      return (
-        <div className="authentication">
-          {showLogin ? (
-            <Login />
-          ) : (
-            <Registration />
-          )}
-          <button onClick={() => this.setState({ showLogin: !showLogin })}>
-            {showLogin ? "Register" : "Login"}
-          </button>
-        </div>
-      );
-    }
+  initSocket = () => {
+    const socket = io('http://localhost:3000');
+    socket.on('game update', (move) => {
+      console.log("Received game update", move);
+      // Here you would handle updating the game state based on the move received
+    });
+    this.setState({ socket });
+  };
 
+  renderGame = () => {
+    const { blackPieces, whitePieces, table, whoPlay } = this.state;
     return (
       <div className="app">
         <PiecesCounterBar blackPieces={blackPieces} whitePieces={whitePieces} />
         <div className="bar">
-          <Button variant="primary" onClick={() => appActions.showMenu(this, true)}>
-            <List size="50" />
-          </Button>
+          <button onClick={() => appActions.showMenu(this, true)}>
+            Menu
+          </button>
           <div className="whoPlay">{whoPlay} plays</div>
         </div>
         <Table table={table} onClick={(evt) => appActions.onClick(this, evt)} />
         <div className="buttons">
-          <Button variant="primary" onClick={() => appActions.restart(this)}>
+          <button onClick={() => appActions.restart(this)}>
             Restart Game
-          </Button>
+          </button>
         </div>
         {this.state.showMenu && <Settings component={this} />}
       </div>
+    );
+  };
+
+  render() {
+    return (
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/game" element={this.renderGame()} />
+        </Routes>
+      </Router>
     );
   }
 }
 
 export default App;
+
 
 
 
