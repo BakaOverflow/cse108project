@@ -8,6 +8,42 @@ import Settings from "./Settings";
 import Login from "./Login"; // Import the Login component
 import Registration from "./Registration"; // Import the Registration component
 
+const API_URL = "http://localhost:3000/";
+const LOGIN_ENDPOINT = "api/users/";
+
+// login function (should probably move to a better place)
+
+function userLogin(inputUser, inputPass) {
+  const sendLogin = {
+    username: inputUser,
+    password: inputPass,
+  };
+  fetch(API_URL + LOGIN_ENDPOINT, {
+    method: 'POST',
+    headers: {
+        'Content-Type': "application/json",
+    },
+    body: JSON.stringify(sendLogin),
+  })
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error(response.status);
+        }
+        return response.json()
+    })
+    .then(data => {
+        setAlertMessage("Logging in");
+        setOpen(true);
+        localStorage.setItem('username', inputUser);
+        navigate("/");
+    })
+    .catch(error => {
+        console.error('Error', error);
+        setAlertMessage("Failed to login");
+        setOpen(true);
+    });
+}
+
 class App extends React.Component {
   constructor(props) {
     super(props);
