@@ -6,9 +6,9 @@ import Table from "./Table";
 import PiecesCounterBar from "./PiecesCounterBar";
 import * as appActions from "./AppActions";
 import Settings from "./Settings";
-import Home from './routes/Home';
-import Login from './routes/Login';
-import Game from './routes/Game';
+import Home from './Home';
+import Login from './Login';
+import Game from './Game';
 
 class App extends React.Component {
   constructor(props) {
