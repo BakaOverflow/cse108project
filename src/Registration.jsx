@@ -36,10 +36,10 @@ function Register() {
 
   return (
     <div>
-      <h2>Register</h2>
+      <h2>Create Room</h2>
       <form onSubmit={handleRegister}>
         <label>
-          Username:
+          Room Name:
           <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
         </label>
         <label>

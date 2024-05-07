@@ -11,10 +11,6 @@ function Login() {
     navigate("/register");
   };
 
-  const testButton = () => {
-    navigate("/game");
-  };
-
   const handleLogin = async (event) => {
     
 
@@ -40,10 +36,10 @@ function Login() {
 
   return (
     <div>
-      <h2>Login</h2>
+      <h2>Login to Room</h2>
       <form onSubmit={handleLogin}>
         <label>
-          Username:
+          Room Name:
           <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
         </label>
         <label>
@@ -53,8 +49,7 @@ function Login() {
         <button type="submit">Login</button>
       </form>
       <p>{message}</p>
-      <button onClick={handleRegisterClick}>Register</button>
-      <button onClick={testButton}>test</button>
+      <button onClick={handleRegisterClick}>Create Room</button>
     </div>
   );
 }
