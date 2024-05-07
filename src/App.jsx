@@ -6,7 +6,7 @@ import Table from "./Table";
 import PiecesCounterBar from "./PiecesCounterBar";
 import * as appActions from "./AppActions";
 import Settings from "./Settings";
-import Home from './Home';
+//import Home from './Home';
 import Login from './Login';
 import Game from './Game';
 
