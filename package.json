@@ -12,10 +12,11 @@
     "npm": "10.5.0"
   },
   "scripts": {
-     "start": "node server.js",
+     "start": "react-scripts start",
      "dev": "webpack-dev-server",
      "build": "react-scripts build",
-     "heroku-postbuild": "npm run build"
+     "heroku-postbuild": "npm run build",
+      "start-server": "node server.js"
   },
   "author": {
     "name": "George Ambriz",
