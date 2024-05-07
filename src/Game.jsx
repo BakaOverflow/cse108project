@@ -30,11 +30,10 @@ class Game extends React.Component {
     
     render() {
         const { blackPieces, whitePieces, table, whoPlay, isAuthenticated, showLogin } = this.state;
-        const navigate = useNavigate();
 
-        if (!isAuthenticated) {
-            navigate("/") //change to proper route
-        }
+        // if (!isAuthenticated) {
+        //     navigate("/") //change to proper route
+        // }
 
         return (
             <div className="app">
