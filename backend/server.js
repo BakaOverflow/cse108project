@@ -1,5 +1,9 @@
+// Modified to allow websockets.
+
 const express = require('express');
 const cors = require('cors');  // Import CORS module
+const http = require('http');
+const socketIo = require('socket.io');
 require('dotenv').config(); // Load environment variables
 const session = require('express-session');
 const passport = require('passport');
@@ -8,11 +12,18 @@ const userRoutes = require('./routes/userRoutes'); // User authentication routes
 const sqlite3 = require("sqlite3").verbose(); // SQLite for database interactions
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const server = http.createServer(app);  // Create HTTP server passing the Express app
+const io = socketIo(server, {
+  cors: {
+    origin: 'http://localhost:9000',
+    methods: ["GET", "POST"],
+    credentials: true
+  }
+}); // Initialize Socket.IO with the server instance
 
 // CORS configuration to allow requests from the frontend URL
 app.use(cors({
-  origin: 'http://localhost:9000', // Adjust as needed if your frontend is at a different URL
+  origin: 'http://localhost:9000',
   credentials: true  // Allows cookies to be sent and received
 }));
 
@@ -43,6 +54,20 @@ const db = new sqlite3.Database("./checkers.db", sqlite3.OPEN_READWRITE, (err) =
   console.log('Connected to the SQLite database.');
 });
 
+// WebSocket connection handler
+io.on('connection', (socket) => {
+  console.log('New client connected');
+
+  socket.on('move', (data) => {
+    console.log('Move received:', data);
+    io.emit('move', data); // Broadcast move to all connected clients
+  });
+
+  socket.on('disconnect', () => {
+    console.log('Client disconnected');
+  });
+});
+
 // Basic route for testing server response
 app.get('/', (req, res) => {
   res.send('Checkers Game Backend is running!');
@@ -51,8 +76,7 @@ app.get('/', (req, res) => {
 // Apply user authentication routes
 app.use('/api/users', userRoutes);
 
-// Instead of Sequelize, maybe some other DB initialization or sync process
-// For now, just start the server
-app.listen(PORT, () => {
+// Start both HTTP and WebSocket server on the same port
+server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
