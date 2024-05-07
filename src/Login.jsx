@@ -11,6 +11,10 @@ function Login() {
     navigate("/register");
   };
 
+  const handleDebugClick = () => {
+    navigate("/game");
+  };
+
   const handleLogin = async (event) => {
     
 
@@ -50,6 +54,7 @@ function Login() {
       </form>
       <p>{message}</p>
       <button onClick={handleRegisterClick}>Create Room</button>
+      <button onClick={handleDebugClick}>Test Game</button>
     </div>
   );
 }
