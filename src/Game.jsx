@@ -31,7 +31,7 @@ class Game extends React.Component {
         const { blackPieces, whitePieces, table, whoPlay, isAuthenticated, showLogin } = this.state;
 
         if (!isAuthenticated) {
-            useNavigate("/login") //change to proper route
+            useNavigate("/") //change to proper route
         }
 
         return (

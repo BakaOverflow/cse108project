@@ -8,6 +8,7 @@ import * as appActions from "./AppActions";
 import Settings from "./Settings";
 //import Home from './Home';
 import Login from './Login';
+import Registration from './Registration';
 import Game from './Game';
 
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Registration />} />
         <Route path="/game" element={<Game />} />
       </Routes>
     </Router>

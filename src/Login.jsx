@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
-  
+  const handleRegisterClick = () => {
+    navigate("/register");
+  };
 
   const handleLogin = async (event) => {
+    
+
     event.preventDefault();
     try {
       const response = await fetch('http://localhost:3000/api/users/login', {
@@ -43,6 +49,7 @@ function Login() {
         <button type="submit">Login</button>
       </form>
       <p>{message}</p>
+      <button onClick={handleRegisterClick}>Register</button>
     </div>
   );
 }
