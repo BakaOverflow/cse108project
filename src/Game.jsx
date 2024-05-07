@@ -7,6 +7,7 @@ import PiecesCounterBar from "./PiecesCounterBar";
 import * as appActions from "./AppActions";
 import Settings from "./Settings";
 
+
 class Game extends React.Component {
     constructor(props) {
       super(props);
@@ -29,9 +30,10 @@ class Game extends React.Component {
     
     render() {
         const { blackPieces, whitePieces, table, whoPlay, isAuthenticated, showLogin } = this.state;
+        const navigate = useNavigate();
 
         if (!isAuthenticated) {
-            useNavigate("/") //change to proper route
+            navigate("/") //change to proper route
         }
 
         return (
